@@ -4,7 +4,8 @@ import json
 
 # Was written by chatGPT
 def plot_algorithms(data):
-    fig, axs = plt.subplots(1, 3, figsize=(18, 6), dpi=120)  # Create a figure with 3 subplots for each algorithm
+    fig, axs = plt.subplots(1, 3, figsize=(18, 6), dpi=120)
+    # Create a figure with 3 subplots for each algorithm
 
     colors = plt.get_cmap("tab20")  # Use a colormap with 20 distinct colors
 
