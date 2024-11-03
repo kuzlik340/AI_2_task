@@ -3,7 +3,6 @@ import math
 import json
 import subprocess
 import sys
-import time
 
 # Function that is used to put all data: centers of clusters and clusters to json file.
 # Because PyPy is not compatible to matplotlib we have to put all computed data to file.
