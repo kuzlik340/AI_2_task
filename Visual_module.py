@@ -19,7 +19,7 @@ def plot_clusters(clusters, centroids):
 
     plt.xlabel("X-axis")
     plt.ylabel("Y-axis")
-    plt.title("K-means Clustering")
+    plt.title("K-means Medoids")
     plt.xlim(-5000, 5000)
     plt.ylim(-5000, 5000)
     plt.grid(True)
@@ -34,9 +34,7 @@ def main():
     clusters = data["clusters"]
     centroids = data["centers"]
 
-    # Вызываем функцию для отрисовки
     plot_clusters(clusters, centroids)
-    print("everything fine")
 
 if __name__ == "__main__":
     main()
