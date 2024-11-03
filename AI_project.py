@@ -46,6 +46,8 @@ def create_points(number_points, points):
             y = random.randint(base_point[1] - 100, base_point[1] + 100)
         points.append((x, y))
 
+
+
 # Function to measure distance from one point to other point
 def dist(x1, y1, x2, y2):
     return math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2))
@@ -60,92 +62,60 @@ def compute_single_centroid(cluster):
 
 
 # Function to compute centroid for cluster
-def compute_centroid(centroids_old, centroids, clusters):
+def compute_centroids(centroids, clusters):
     for cluster in clusters:
-        # Check if cluster exists
-        if cluster:
             centroids.append(compute_single_centroid(cluster))
-        else:
-            # If cluster does not exist then we just append old centroid
-            centroids.append(centroids_old[clusters.index(cluster)])
 
 # Function to compute medoid for cluster
-def compute_medoid(medoids_old, medoids, clusters):
+def compute_medoids(medoids, clusters):
     for cluster in clusters:
         distances_min = float('inf')
         medoid = None
-        if cluster:
-            for candidate in cluster:
-                distances_sum = sum(dist(candidate[0], candidate[1], bod[0], bod[1]) for bod in cluster)
-                if distances_sum < distances_min:
-                    distances_min = distances_sum
-                    medoid = candidate
-            medoids.append(medoid)
-        else:
-            medoids.append(medoids_old[clusters.index(cluster)])
+        for candidate in cluster:
+            distances_sum = sum(dist(candidate[0], candidate[1], bod[0], bod[1]) for bod in cluster)
+            if distances_sum < distances_min:
+                distances_min = distances_sum
+                medoid = candidate
+        medoids.append(medoid)
 
 
-# Function to compute single centroid
-def compute_single_centroid(cluster):
-    x_coords = [point[0] for point in cluster]
-    y_coords = [point[1] for point in cluster]
-    x_mean = sum(x_coords) / len(x_coords)
-    y_mean = sum(y_coords) / len(y_coords)
-    return (x_mean, y_mean)
-
-# Function for divisive clustering
-def divisive_clustering(points, max_clusters):
-    distance_border = 400 #maybe 500????
-    clusters = [points]
-    centroids = []
+# Function for divisive clustering using custom k-means for splitting
+def divisive_clustering_kmeans(points, max_clusters, max_iterations=100):
+    clusters = [points]  # Start with all points in one cluster
+    centroids = [compute_single_centroid(points)]
 
     while len(clusters) < max_clusters:
-        new_clusters = []
-        new_centroids = []
 
-        for cluster in clusters:
-            if len(cluster) < 1:
-                # Cluster is too small, just one point
-                new_clusters.append(cluster)
-                centroids.append(compute_single_centroid(cluster))  # Добавляем его центроид
-                continue
-            # Find the centroid cluster
-            centroid = compute_single_centroid(cluster)
-            total_distance = sum(dist(point[0], point[1], centroid[0], centroid[1]) for point in cluster)
+        clusters_average_dist = []
+        for centroid, cluster in zip(centroids, clusters):
+            total_distance = 0
+            for bod in cluster:
+                total_distance += dist(bod[0], bod[1], centroid[0], centroid[1])
             average_distance = total_distance / len(cluster)
+            clusters_average_dist.append(average_distance)
+        split_cluster_idx = clusters_average_dist.index(max(clusters_average_dist))
+        split_cluster = clusters[split_cluster_idx]
 
-            # if average_distance <= distance_border:
-            #     # Cluster is too dense
-            #     new_clusters.append(cluster)
-            #     new_centroids.append(centroid)  # Сохраняем центроид кластера
-            #     continue
 
-            # Creating two small clusters to split main cluster
-            child_cluster1 = []
-            child_cluster2 = []
-
-            for point in cluster:
-                if dist(point[0], point[1], centroid[0], centroid[1]) < average_distance:
-                    child_cluster1.append(point)
-                else:
-                    child_cluster2.append(point)
-
-            # Appending the clusters if there are some points inside
-            if child_cluster1:
-                new_clusters.append(child_cluster1)
-                new_centroids.append(compute_single_centroid(child_cluster1))  # Сохраняем центроид
-            if child_cluster2:
-                new_clusters.append(child_cluster2)
-                new_centroids.append(compute_single_centroid(child_cluster2))  # Сохраняем центроид
-
-        if len(new_clusters) == len(clusters):
-            # If there is a situation when after last iteration there was no changing to the clusters
+        # If the largest cluster has less than 2 points, we can't split it further
+        if len(split_cluster) < 2:
             break
 
-        clusters = new_clusters
-        centroids = new_centroids  # Updating an array of centroids
+        # Apply custom k-means with k=2 to split the largest cluster
+        cluster_number = 2
+        new_clusters, new_centroids = clusterization_k_means(split_cluster, "centroid", cluster_number,
+                                                             max_iterations)
+
+        # Replace the largest cluster with the two new clusters
+        clusters[split_cluster_idx] = new_clusters[0]
+        clusters.append(new_clusters[1])
+
+        # Store the centroids of the two new clusters
+        centroids[split_cluster_idx] = new_centroids[0]
+        centroids.append(new_centroids[1])
 
     return clusters, centroids
+
 
 # Function to evaluate created clusters
 def evaluation(clusters, centroids):
@@ -154,24 +124,18 @@ def evaluation(clusters, centroids):
     for centroid, cluster in zip(centroids, clusters):
         i += 1
         total_distance = 0
-        if cluster:
-            for bod in cluster:
-                total_distance += dist(bod[0], bod[1], centroid[0], centroid[1])
-            average_distance = total_distance / len(cluster)
-            bods_num = len(cluster)
-            sum += bods_num
-            if average_distance <= 500:
-                print("Cluster " + str(i) + " success!! with average distance " + str(average_distance) + " and with " + str(bods_num) + " bods")
-            else:
-                print("Cluster " + str(i) + " failure!! with average distance " + str(average_distance) + " and with " + str(bods_num) + " bods")
+        for bod in cluster:
+            total_distance += dist(bod[0], bod[1], centroid[0], centroid[1])
+        average_distance = total_distance / len(cluster)
+        bods_num = len(cluster)
+        sum += bods_num
+        if average_distance <= 500:
+            print("Cluster " + str(i) + " success!! With average distance " + str(average_distance) + " and with " + str(bods_num) + " bods")
         else:
-            print("Cluster " + str(i) + " does not exist...")
-    print(sum)
+            print("Cluster " + str(i) + " failure :( With average distance " + str(average_distance) + " and with " + str(bods_num) + " bods")
+    print("Total number of points that were processed: " + str(sum))
 
 
-
-# todo K means how many clusters?
-# todo May we use first 20 points
 def clusterization_k_means(points, mode, cluster_number, max_iterations):
     # Initializing first centers as first points in 'points'
     clusters_centers = points[:cluster_number]
@@ -189,22 +153,22 @@ def clusterization_k_means(points, mode, cluster_number, max_iterations):
             clusters[nearest_cluster_center_index].append(point)
         new_centers = []
         if 'medoid' in mode:
-           compute_medoid(clusters_centers, new_centers, clusters)
+           compute_medoids(new_centers, clusters)
         elif 'centroid' in mode:
-           compute_centroid(clusters_centers, new_centers, clusters)
+           compute_centroids(new_centers, clusters)
         if new_centers == clusters_centers:
             break
         clusters_centers = new_centers
     return clusters, clusters_centers
 
+
 def main():
-    max_clusters = 20
-    cluster_number = 20
+    max_clusters = 18
+    cluster_number = 19
     max_iterations = 50
     points = []
     first_points(points)
-    print("How many points do you want?")
-    input_points = int(input())
+    input_points = 40000
     print("What algorithm you want to use? \n"
           "put 'M' for K-means with medoid \n"
           "put 'C' for K-means with centroid\n"
@@ -217,7 +181,7 @@ def main():
     elif m == 'C':
         clusters, centers = clusterization_k_means(points, "centroid", cluster_number, max_iterations)
     elif m == 'D':
-        clusters, centers = divisive_clustering(points, max_clusters)
+        clusters, centers = divisive_clustering_kmeans(points, max_clusters)
     elif m == "MCD":
         clusters, centers = clusterization_k_means(points, "medoid", cluster_number, max_iterations)
         save_clusters_to_json(clusters, centers, filename="clusters_data.json")
@@ -229,7 +193,7 @@ def main():
         subprocess.Popen(["python3", "Visual_module.py", "clusters_data.json"])
         evaluation(clusters, centers)
 
-        clusters, centers = divisive_clustering(points, max_clusters)
+        clusters, centers = divisive_clustering_kmeans(points, max_clusters)
         save_clusters_to_json(clusters, centers, filename="clusters_data.json")
         subprocess.Popen(["python3", "Visual_module.py", "clusters_data.json"])
         evaluation(clusters, centers)
