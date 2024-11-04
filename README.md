@@ -1,12 +1,3 @@
----
-author:
-- Timofei Kuzin
-date: October 2024
-title: |
-  Documentation AI Project 2B\
-  Clusterisation
----
-
 # Task
 
 The primary objective of this task is to implement clustering of points
@@ -66,8 +57,8 @@ Here is the picture that contains all 40020 points and the result of
 K-means with centroids clusterization.
 
 <figure id="fig:centroid-clusters">
-<img src="centroel.png" />
-<img src="myplot2.png" />
+<img width="736" alt="centroel" src="https://github.com/user-attachments/assets/4625e6d8-c14d-448b-a5bf-2509d1db284c">
+![myplot2](https://github.com/user-attachments/assets/8c2ec6a9-0b2f-4a03-8839-9297142b73f5)
 <figcaption>Result of K-means (centroids) clusterization with 18
 clusters</figcaption>
 </figure>
@@ -82,8 +73,8 @@ approximately equidistant from all other points. Based on testing, 18
 was selected as the optimal number of clusters.
 
 <figure id="fig:medoid-clusters">
-<img src="medoel.png" />
-<img src="Screenshot 2024-11-02 at 20.21.21.png" />
+<img width="721" alt="medoel" src="https://github.com/user-attachments/assets/82306745-7a7c-442e-916f-c9a24bbdd044">
+<img width="852" alt="Screenshot 2024-11-02 at 20 21 21" src="https://github.com/user-attachments/assets/d2f92616-c8a3-447b-9131-0f2eb3fa9441">
 <figcaption>Result of K-means (medoids) clusterization with 18
 clusters</figcaption>
 </figure>
@@ -162,5 +153,6 @@ while the slowest is K-means with medoids, as it requires checking all
 points in each cluster during every iteration. Comparing the quality of
 the clustering methods isn't necessary here, as each method as a result
 has organized clusters in a very similar way.
+<img width="1440" alt="ALL" src="https://github.com/user-attachments/assets/5fabc92c-3c80-425f-acfe-7524d72205d1">
 
-![Result of All clusterizations](ALL.png){#fig:enter-label width="90%"}
+
