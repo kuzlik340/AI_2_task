@@ -56,11 +56,9 @@ centroids are initialized as the first points in the points array.
 Here is the picture that contains all 40020 points and the result of
 K-means with centroids clusterization.
 
-<figure id="fig:centroid-clusters">
+<figure>
 <img width="736" alt="centroel" src="https://github.com/user-attachments/assets/4625e6d8-c14d-448b-a5bf-2509d1db284c">
-![myplot2](https://github.com/user-attachments/assets/8c2ec6a9-0b2f-4a03-8839-9297142b73f5)
-<figcaption>Result of K-means (centroids) clusterization with 18
-clusters</figcaption>
+<img alt="mypl" src=https://github.com/user-attachments/assets/7ec347a3-f3e1-4d8e-93bc-9e2e197e474e">
 </figure>
 
 ## K-means with medoids
@@ -72,11 +70,9 @@ the center, a medoid is an existing point within the cluster that is
 approximately equidistant from all other points. Based on testing, 18
 was selected as the optimal number of clusters.
 
-<figure id="fig:medoid-clusters">
+<figure>
 <img width="721" alt="medoel" src="https://github.com/user-attachments/assets/82306745-7a7c-442e-916f-c9a24bbdd044">
 <img width="852" alt="Screenshot 2024-11-02 at 20 21 21" src="https://github.com/user-attachments/assets/d2f92616-c8a3-447b-9131-0f2eb3fa9441">
-<figcaption>Result of K-means (medoids) clusterization with 18
-clusters</figcaption>
 </figure>
 
 # Divisive clustering
@@ -153,6 +149,7 @@ while the slowest is K-means with medoids, as it requires checking all
 points in each cluster during every iteration. Comparing the quality of
 the clustering methods isn't necessary here, as each method as a result
 has organized clusters in a very similar way.
+
 <img width="1440" alt="ALL" src="https://github.com/user-attachments/assets/5fabc92c-3c80-425f-acfe-7524d72205d1">
 
 
