@@ -58,7 +58,8 @@ K-means with centroids clusterization.
 
 <figure>
 <img width="736" alt="centroel" src="https://github.com/user-attachments/assets/4625e6d8-c14d-448b-a5bf-2509d1db284c">
-<img alt="mypl" src=https://github.com/user-attachments/assets/7ec347a3-f3e1-4d8e-93bc-9e2e197e474e">
+<img width="539" alt="Screenshot 2024-11-04 at 02 21 21" src="https://github.com/user-attachments/assets/01ab5641-773a-4f13-bbe5-5c0ee9bfe0e6">
+
 </figure>
 
 ## K-means with medoids
