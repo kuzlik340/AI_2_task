@@ -58,7 +58,7 @@ K-means with centroids clusterization.
 
 <figure>
 <img width="736" alt="centroel" src="https://github.com/user-attachments/assets/4625e6d8-c14d-448b-a5bf-2509d1db284c">
-<img width="539" alt="Screenshot 2024-11-04 at 02 21 21" src="https://github.com/user-attachments/assets/01ab5641-773a-4f13-bbe5-5c0ee9bfe0e6">
+<img width="539" alt="map1" src="https://github.com/user-attachments/assets/01ab5641-773a-4f13-bbe5-5c0ee9bfe0e6">
 
 </figure>
 
@@ -73,7 +73,7 @@ was selected as the optimal number of clusters.
 
 <figure>
 <img width="721" alt="medoel" src="https://github.com/user-attachments/assets/82306745-7a7c-442e-916f-c9a24bbdd044">
-<img width="852" alt="Screenshot 2024-11-02 at 20 21 21" src="https://github.com/user-attachments/assets/d2f92616-c8a3-447b-9131-0f2eb3fa9441">
+<img width="852" alt="map" src="https://github.com/user-attachments/assets/d2f92616-c8a3-447b-9131-0f2eb3fa9441">
 </figure>
 
 # Divisive clustering
